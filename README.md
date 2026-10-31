@@ -26,6 +26,17 @@ a clean, responsive place to think out loud.
    You can also set `OPENAI_API_KEY` and optionally `OPENAI_MODEL` directly in
    your environment instead of using a `.env` file.
 
+## Open the interface with VS Code Live Server
+
+For a visual preview, open `static/index.html` in VS Code and choose **Open
+with Live Server**. The page now loads its CSS and JavaScript with relative
+paths, so it displays correctly at `/static/index.html`.
+
+Live Server only hosts static files; it cannot run the Python API. To send
+messages to the LLM, keep `python app.py` running and open
+http://127.0.0.1:5000 instead. The API key must be configured as described
+above.
+
 ## How it works
 
 - `POST /api/chat` accepts `{"message": "...", "conversation_id": "..."}` and

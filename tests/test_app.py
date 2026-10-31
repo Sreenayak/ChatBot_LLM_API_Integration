@@ -99,6 +99,16 @@ class ChatEndpointTests(unittest.TestCase):
             finally:
                 response.close()
 
+    def test_static_page_uses_relative_asset_paths_for_live_server(self):
+        response = self.client.get("/")
+        try:
+            html = response.get_data(as_text=True)
+        finally:
+            response.close()
+
+        self.assertIn('href="./styles.css"', html)
+        self.assertIn('src="./app.js"', html)
+
 
 if __name__ == "__main__":
     unittest.main()
