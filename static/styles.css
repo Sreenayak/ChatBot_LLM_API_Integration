@@ -53,15 +53,38 @@ button { color: inherit; }
 }
 
 .brand-mark {
+  position: relative;
   width: 35px;
   height: 35px;
   display: grid;
   place-items: center;
-  color: white;
   background: linear-gradient(145deg, #a18df2, #6d59d0);
   border-radius: 12px;
   box-shadow: 0 5px 13px rgba(111, 87, 206, .23);
-  font-size: 19px;
+}
+
+.bubble-glyph {
+  position: relative;
+  width: 19px;
+  height: 15px;
+  display: block;
+  border-radius: 6px;
+  background:
+    radial-gradient(circle at 5px 7.5px, #806de0 1.25px, transparent 1.6px),
+    radial-gradient(circle at 9.5px 7.5px, #806de0 1.25px, transparent 1.6px),
+    radial-gradient(circle at 14px 7.5px, #806de0 1.25px, transparent 1.6px),
+    #fff;
+}
+
+.bubble-glyph::after {
+  position: absolute;
+  bottom: -3px;
+  left: 3px;
+  width: 6px;
+  height: 6px;
+  background: #fff;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+  content: "";
 }
 
 .brand-period { color: var(--purple); }
@@ -121,12 +144,10 @@ button { color: inherit; }
   display: grid;
   place-items: center;
   margin: 0 auto 21px;
-  color: white;
   background: linear-gradient(145deg, #b2a1fa, #8069df 65%, #6d59d0);
   border: 5px solid rgba(255, 255, 255, .85);
   border-radius: 23px;
   box-shadow: 0 9px 24px rgba(112, 90, 202, .2);
-  font-size: 26px;
 }
 
 .eyebrow {
@@ -187,32 +208,34 @@ h1 span {
   display: grid;
   place-items: center;
   border-radius: 11px;
-  font-size: 18px;
 }
 
+.suggestion-icon svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 .lavender { color: #7865ce; background: #f0edff; }
 .peach { color: #c47b58; background: #fff1e9; }
 .mint { color: #589a82; background: #e9f6f0; }
 .suggestion strong, .suggestion small { display: block; }
 .suggestion strong { margin-bottom: 3px; font-size: 12px; font-weight: 700; }
 .suggestion small { color: var(--muted); font-size: 11px; }
-.suggestion-arrow { margin-left: auto; color: #aaa4c6; font-size: 16px; }
+.suggestion-arrow { margin-left: auto; color: #aaa4c6; }
+.suggestion-arrow svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 
 .message-list { width: min(100%, 620px); margin: 8px auto 28px; }
 .message-row { display: flex; gap: 11px; margin: 18px 0; align-items: flex-start; }
 .message-row.user { justify-content: flex-end; }
 
 .message-avatar {
+  position: relative;
   width: 29px;
   height: 29px;
   flex: 0 0 29px;
   display: grid;
   place-items: center;
-  color: white;
   background: linear-gradient(145deg, #a18df2, #6d59d0);
   border-radius: 10px;
-  font-size: 14px;
 }
+
+.message-avatar .bubble-glyph { transform: scale(.72); }
 
 .message-bubble {
   max-width: min(84%, 490px);

@@ -1,6 +1,6 @@
-# Lumi — a thoughtful little AI companion
+# Mira — a thoughtful little AI companion
 
-A small, friendly chat app powered by the OpenAI API. Lumi remembers the
+A small, friendly chat app powered by the OpenAI API. Mira remembers the
 conversation, keeps the most recent 12 messages in its context, and gives you
 a clean, responsive place to think out loud.
 
@@ -42,7 +42,7 @@ above.
 - `POST /api/chat` accepts `{"message": "...", "conversation_id": "..."}` and
   returns `{"reply": "...", "conversation_id": "..."}`.
 - Conversation history is kept in memory per conversation. The last 12 user
-  and assistant messages are sent with each request, alongside Lumi's system
+  and assistant messages are sent with each request, alongside Mira's system
   prompt. A new chat starts a fresh conversation.
 - History is limited to 100 active conversations and is cleared when the
   server restarts. This is intentionally lightweight; use persistent storage

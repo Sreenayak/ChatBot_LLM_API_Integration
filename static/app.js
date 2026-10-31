@@ -20,7 +20,10 @@ function appendMessage(role, text) {
   if (role === "assistant") {
     const avatar = document.createElement("span");
     avatar.className = "message-avatar";
-    avatar.textContent = "✦";
+    const icon = document.createElement("span");
+    icon.className = "bubble-glyph";
+    icon.setAttribute("aria-hidden", "true");
+    avatar.append(icon);
     avatar.setAttribute("aria-hidden", "true");
     row.append(avatar);
   }
@@ -38,7 +41,7 @@ function showTyping() {
   const row = appendMessage("assistant", "");
   row.classList.add("typing");
   const bubble = row.querySelector(".message-bubble");
-  bubble.setAttribute("aria-label", "Lumi is thinking");
+  bubble.setAttribute("aria-label", "Mira is thinking");
   bubble.replaceChildren(...[0, 1, 2].map(() => {
     const dot = document.createElement("span");
     dot.className = "typing-dot";
@@ -73,7 +76,7 @@ async function sendMessage(text) {
     appendMessage("assistant", result.reply);
   } catch (error) {
     typing.remove();
-    appendMessage("assistant", error.message || "We couldn't reach Lumi. Check your connection and try again.");
+    appendMessage("assistant", error.message || "We couldn't reach Mira. Check your connection and try again.");
   } finally {
     waiting = false;
     sendButton.disabled = false;

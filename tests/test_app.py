@@ -92,7 +92,7 @@ class ChatEndpointTests(unittest.TestCase):
         self.assertIn("JSON", response.get_json()["error"])
 
     def test_homepage_and_assets_load(self):
-        for path in ("/", "/styles.css", "/app.js"):
+        for path in ("/", "/styles.css", "/app.js", "/favicon.svg"):
             response = self.client.get(path)
             try:
                 self.assertEqual(response.status_code, 200)
@@ -108,6 +108,8 @@ class ChatEndpointTests(unittest.TestCase):
 
         self.assertIn('href="./styles.css"', html)
         self.assertIn('src="./app.js"', html)
+        self.assertIn("<title>Mira — a little more thoughtful</title>", html)
+        self.assertIn('href="./favicon.svg"', html)
 
 
 if __name__ == "__main__":
