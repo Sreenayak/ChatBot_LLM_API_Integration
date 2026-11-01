@@ -1,6 +1,16 @@
+# API keys and environment variables
 .env
-.venv/
-venv/
+.env.*
+!.env.example
+app.env
+
+# Python cache
 __pycache__/
-*.py[cod]
-.pytest_cache/
+*.pyc
+
+# Virtual environment
+venv/
+.venv/
+
+# Build files
+dist/
