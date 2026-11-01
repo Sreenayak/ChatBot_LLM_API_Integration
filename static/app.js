@@ -5,15 +5,48 @@ const form = document.querySelector("#chat-form");
 const input = document.querySelector("#message-input");
 const sendButton = document.querySelector("#send-button");
 const newChatButton = document.querySelector("#new-chat");
+const themeToggle = document.querySelector("#theme-toggle");
+const themeLabel = document.querySelector("#theme-label");
 const historyList = document.querySelector("#history-list");
 const historyEmpty = document.querySelector("#history-empty");
+const historySearch = document.querySelector("#history-search");
+const historyCount = document.querySelector("#history-count");
 const storageNotice = document.querySelector("#storage-notice");
 
 const HISTORY_STORAGE_KEY = "mira-chat-history";
+const THEME_STORAGE_KEY = "mira-chat-theme";
 const MAX_SAVED_CONVERSATIONS = 50;
 let conversationId = crypto.randomUUID();
 let waiting = false;
 let savedConversations = loadConversations();
+
+function applyTheme(theme) {
+  const isDark = theme === "dark";
+  document.body.dataset.theme = isDark ? "dark" : "light";
+  themeToggle.setAttribute("aria-pressed", String(isDark));
+  themeLabel.textContent = isDark ? "Light mode" : "Dark mode";
+  themeToggle.querySelector("[aria-hidden='true']").textContent = isDark ? "☀" : "☾";
+}
+
+function loadTheme() {
+  try {
+    applyTheme(localStorage.getItem(THEME_STORAGE_KEY) === "dark" ? "dark" : "light");
+  } catch (error) {
+    applyTheme("light");
+    showStorageNotice("Theme preference could not be loaded from this browser.");
+  }
+}
+
+function toggleTheme() {
+  const theme = document.body.dataset.theme === "dark" ? "light" : "dark";
+  applyTheme(theme);
+  try {
+    localStorage.setItem(THEME_STORAGE_KEY, theme);
+    showStorageNotice("");
+  } catch (error) {
+    showStorageNotice("Theme changed, but this browser could not save your preference.");
+  }
+}
 
 function showStorageNotice(message) {
   storageNotice.textContent = message;
@@ -59,9 +92,20 @@ function persistConversations() {
 
 function renderHistory() {
   historyList.replaceChildren();
-  historyEmpty.hidden = savedConversations.length > 0;
+  const searchTerm = historySearch.value.trim().toLocaleLowerCase();
+  const filteredConversations = savedConversations.filter((saved) =>
+    saved.title.toLocaleLowerCase().includes(searchTerm) ||
+    saved.messages.some((message) => message.content.toLocaleLowerCase().includes(searchTerm))
+  );
+  historyCount.textContent = String(savedConversations.length);
+  historyEmpty.hidden = filteredConversations.length > 0;
+  historyEmpty.textContent = savedConversations.length && searchTerm
+    ? "No conversations match your search."
+    : "Your conversations will appear here.";
 
-  savedConversations.forEach((saved) => {
+  filteredConversations.forEach((saved) => {
+    const entry = document.createElement("div");
+    entry.className = "history-entry";
     const button = document.createElement("button");
     button.className = "history-item";
     button.type = "button";
@@ -76,8 +120,28 @@ function renderHistory() {
     date.textContent = new Date(saved.updatedAt).toLocaleDateString();
     button.append(title, date);
     button.addEventListener("click", () => openConversation(saved.id));
-    historyList.append(button);
+
+    const deleteButton = document.createElement("button");
+    deleteButton.className = "history-delete";
+    deleteButton.type = "button";
+    deleteButton.textContent = "×";
+    deleteButton.setAttribute("aria-label", `Delete conversation: ${saved.title}`);
+    deleteButton.title = "Delete conversation";
+    deleteButton.disabled = waiting;
+    deleteButton.addEventListener("click", () => deleteConversation(saved.id));
+    entry.append(button, deleteButton);
+    historyList.append(entry);
   });
+}
+
+function deleteConversation(id) {
+  const saved = savedConversations.find((item) => item.id === id);
+  if (!saved || waiting || !window.confirm(`Delete "${saved.title}" from this device?`)) return;
+
+  savedConversations = savedConversations.filter((item) => item.id !== id);
+  persistConversations();
+  if (conversationId === id) startNewChat();
+  renderHistory();
 }
 
 function openConversation(id) {
@@ -257,4 +321,7 @@ document.querySelectorAll(".suggestion").forEach((button) => {
 });
 
 newChatButton.addEventListener("click", startNewChat);
+themeToggle.addEventListener("click", toggleTheme);
+historySearch.addEventListener("input", renderHistory);
+loadTheme();
 renderHistory();

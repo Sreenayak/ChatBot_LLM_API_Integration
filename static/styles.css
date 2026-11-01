@@ -8,6 +8,18 @@
   --surface: #fff;
 }
 
+body[data-theme="dark"] {
+  color-scheme: dark;
+  --ink: #eeedf8;
+  --muted: #aaa8be;
+  --line: #373447;
+  --surface: #242232;
+  background:
+    radial-gradient(ellipse at 12% 9%, rgba(86, 69, 145, .22), transparent 28rem),
+    radial-gradient(ellipse at 91% 87%, rgba(139, 88, 85, .14), transparent 28rem),
+    #191824;
+}
+
 * { box-sizing: border-box; }
 
 body {
@@ -108,6 +120,23 @@ button { color: inherit; }
   box-shadow: 0 0 0 3px rgba(104, 190, 151, .13);
 }
 
+.theme-toggle {
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 11px;
+  border: 1px solid #e8e6f0;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, .75);
+  color: var(--ink);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.theme-toggle:hover { border-color: #c9c1ef; }
+.theme-toggle span:first-child { color: var(--purple); font-size: 16px; }
+
 .new-chat {
   height: 39px;
   display: inline-flex;
@@ -127,6 +156,11 @@ button { color: inherit; }
 .new-chat:disabled { opacity: .55; cursor: wait; transform: none; }
 .new-chat svg { width: 15px; fill: none; stroke: var(--purple); stroke-width: 1.8; stroke-linecap: round; }
 
+button:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 3px solid rgba(120, 101, 219, .45);
+  outline-offset: 2px;
+}
+
 .chat-layout {
   min-height: 0;
   flex: 1;
@@ -144,12 +178,29 @@ button { color: inherit; }
 }
 
 .history-heading { padding: 0 14px 14px; }
+.history-title-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
 .history-heading h2 { margin: 0 0 4px; font: 700 15px "Manrope", sans-serif; }
+.history-title-row h2 { margin: 0; }
+.history-count { min-width: 20px; padding: 2px 6px; border-radius: 8px; background: #efedfa; color: var(--purple-dark); text-align: center; font-size: 10px; font-weight: 700; }
 .history-heading span { color: var(--muted); font-size: 11px; }
+.history-search {
+  width: calc(100% - 28px);
+  height: 36px;
+  flex: 0 0 auto;
+  margin: 0 14px 12px;
+  padding: 0 10px;
+  border: 1px solid #e8e6f0;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .65);
+  color: var(--ink);
+  font-size: 11px;
+}
 .history-list { min-height: 0; display: grid; align-content: start; gap: 5px; overflow-y: auto; padding: 0 12px 0 0; }
 
+.history-entry { min-width: 0; display: flex; align-items: center; gap: 2px; }
 .history-item {
-  width: 100%;
+  min-width: 0;
+  flex: 1;
   display: grid;
   gap: 4px;
   padding: 10px 12px;
@@ -164,6 +215,22 @@ button { color: inherit; }
 .history-item[aria-current="page"] { border-color: #e8e4f6; background: rgba(255, 255, 255, .85); }
 .history-title { overflow: hidden; color: #39374c; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
 .history-date { color: var(--muted); font-size: 10px; }
+.history-delete {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 19px;
+  line-height: 1;
+  opacity: 0;
+  cursor: pointer;
+}
+.history-entry:hover .history-delete, .history-delete:focus-visible { opacity: 1; }
+.history-delete:hover { background: #fff0ef; color: #b94a45; }
+.history-delete:disabled { cursor: wait; }
 .history-empty { margin: 0; padding: 0 14px; color: var(--muted); font-size: 11px; line-height: 1.6; }
 
 .chat-panel {
@@ -284,8 +351,8 @@ h1 span {
   padding: 12px 15px;
   border: 1px solid #eeedf4;
   border-radius: 5px 15px 15px;
-  background: white;
-  color: #39374c;
+  background: var(--surface);
+  color: var(--ink);
   font-size: 13px;
   line-height: 1.7;
   overflow-wrap: anywhere;
@@ -311,7 +378,7 @@ h1 span {
   padding: 14px 15px 11px;
   border: 1px solid #e9e7f0;
   border-radius: 17px;
-  background: rgba(255, 255, 255, .91);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
   box-shadow: 0 8px 26px rgba(51, 42, 91, .055);
   transition: border-color .2s, box-shadow .2s;
 }
@@ -341,17 +408,38 @@ h1 span {
 .disclaimer { margin: 11px 0 0; color: #b0afbd; text-align: center; font-size: 10px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
 
+body[data-theme="dark"] .topbar,
+body[data-theme="dark"] .history-sidebar { border-color: rgba(220, 219, 231, .13); }
+body[data-theme="dark"] .theme-toggle,
+body[data-theme="dark"] .new-chat,
+body[data-theme="dark"] .history-search { border-color: #39364b; background: rgba(36, 34, 50, .85); }
+body[data-theme="dark"] .history-title { color: var(--ink); }
+body[data-theme="dark"] .history-count { background: #39344e; color: #c3b8ff; }
+body[data-theme="dark"] .history-item:hover,
+body[data-theme="dark"] .history-item[aria-current="page"] { border-color: #45405c; background: rgba(54, 50, 72, .75); }
+body[data-theme="dark"] .history-delete:hover { background: #4b3036; color: #ff9a91; }
+body[data-theme="dark"] .suggestion { border-color: #39364b; background: rgba(36, 34, 50, .82); color: var(--ink); }
+body[data-theme="dark"] .suggestion:hover { border-color: #5e538c; }
+body[data-theme="dark"] .message-bubble { border-color: #39364b; }
+body[data-theme="dark"] .composer { border-color: #39364b; }
+body[data-theme="dark"] .connection { color: var(--muted); }
+body[data-theme="dark"] .disclaimer { color: #777589; }
+
 @media (max-width: 600px) {
   .topbar { height: 70px; }
   .topbar-right { gap: 12px; }
   .connection { font-size: 11px; }
+  .theme-toggle { width: 38px; justify-content: center; padding: 0; }
+  .theme-toggle #theme-label { display: none; }
   .new-chat { width: 38px; justify-content: center; padding: 0; }
   .new-chat span { display: none; }
   .chat-layout { flex-direction: column; gap: 0; }
   .history-sidebar { width: auto; flex: 0 0 auto; max-height: 170px; padding: 12px 15px 8px; border-right: 0; border-bottom: 1px solid rgba(220, 219, 231, .7); }
   .history-heading { padding: 0 0 8px; }
+  .history-search { width: 100%; margin: 0 0 8px; }
   .history-list { display: flex; overflow-x: auto; padding: 0 0 4px; }
-  .history-item { width: 170px; flex: 0 0 170px; }
+  .history-entry { width: 190px; flex: 0 0 190px; }
+  .history-delete { opacity: 1; }
   .history-empty { padding: 0; }
   .chat-panel { padding: 0 15px 17px; }
   .welcome { padding-top: 40px; }

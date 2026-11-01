@@ -49,6 +49,9 @@ above.
   Clearing browser data or using another browser/device removes or hides these
   saved conversations. The model context itself remains in server memory and
   resets when the server restarts.
+- Search saved conversations by title or message, delete individual chats, and
+  switch between light and dark themes. The theme preference is also saved in
+  the browser.
 - History is limited to 100 active conversations and is cleared when the
   server restarts. This is intentionally lightweight; use persistent storage
   for a multi-user production deployment.
