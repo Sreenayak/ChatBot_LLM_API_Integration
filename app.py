@@ -94,7 +94,7 @@ def chat():
     if not isinstance(conversation_id, str) or not re.fullmatch(r"[A-Za-z0-9_-]{1,64}", conversation_id):
         return jsonify(error="That conversation could not be found. Start a new chat."), 400
 
-    api_key = os.getenv("OPENAI_API_KEY")
+    api_key = OPENAI_API_KEY
     if not api_key:
         return jsonify(error="The chat service is not configured yet. Add OPENAI_API_KEY to your environment."), 503
 

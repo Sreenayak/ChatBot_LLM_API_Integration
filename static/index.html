@@ -27,52 +27,64 @@
         </div>
       </header>
 
-      <main class="chat-panel">
-        <section class="conversation" id="conversation" aria-live="polite" aria-label="Conversation">
-          <div class="welcome" id="welcome">
-            <div class="welcome-orb" aria-hidden="true"><span class="bubble-glyph"></span></div>
-            <p class="eyebrow">A LITTLE SPACE TO THINK</p>
-            <h1>Good things start<br>with a <span>conversation.</span></h1>
-            <p class="welcome-copy">I'm Mira, your thoughtful AI companion.<br>What's on your mind today?</p>
-            <div class="suggestions" aria-label="Conversation starters">
-              <button class="suggestion" type="button" data-prompt="Help me plan a calm, productive week">
-                <span class="suggestion-icon lavender" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7.5"/><path d="M11 7v4l2.5 2.5M16.5 16.5 21 21"/></svg>
-                </span>
-                <span><strong>Find your focus</strong><small>Plan a calmer, more productive week</small></span>
-                <span class="suggestion-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
-              </button>
-              <button class="suggestion" type="button" data-prompt="I'd love a little creative inspiration">
-                <span class="suggestion-icon peach" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M9 14.5a6 6 0 1 1 6 0c-.8.6-1 1.4-1 2.5h-4c0-1.1-.2-1.9-1-2.5Z"/></svg>
-                </span>
-                <span><strong>Get inspired</strong><small>Explore a new idea together</small></span>
-                <span class="suggestion-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
-              </button>
-              <button class="suggestion" type="button" data-prompt="Can you help me think through something?">
-                <span class="suggestion-icon mint" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H6l-3 2v-6a7.5 7.5 0 1 1 17-3.5Z"/><path d="M8 11h.01M12 11h.01M16 11h.01"/></svg>
-                </span>
-                <span><strong>Talk it through</strong><small>Make space for what's on your mind</small></span>
-                <span class="suggestion-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+      <div class="chat-layout">
+        <aside class="history-sidebar" aria-label="Chat history">
+          <div class="history-heading">
+            <h2>History</h2>
+            <span>Saved on this device</span>
+          </div>
+          <nav class="history-list" id="history-list" aria-label="Saved conversations"></nav>
+          <p class="history-empty" id="history-empty">Your conversations will appear here.</p>
+        </aside>
+
+        <main class="chat-panel">
+          <p class="storage-notice" id="storage-notice" role="status" hidden></p>
+          <section class="conversation" id="conversation" aria-live="polite" aria-label="Conversation">
+            <div class="welcome" id="welcome">
+              <div class="welcome-orb" aria-hidden="true"><span class="bubble-glyph"></span></div>
+              <p class="eyebrow">A LITTLE SPACE TO THINK</p>
+              <h1>Good things start<br>with a <span>conversation.</span></h1>
+              <p class="welcome-copy">I'm Mira, your thoughtful AI companion.<br>What's on your mind today?</p>
+              <div class="suggestions" aria-label="Conversation starters">
+                <button class="suggestion" type="button" data-prompt="Help me plan a calm, productive week">
+                  <span class="suggestion-icon lavender" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7.5"/><path d="M11 7v4l2.5 2.5M16.5 16.5 21 21"/></svg>
+                  </span>
+                  <span><strong>Find your focus</strong><small>Plan a calmer, more productive week</small></span>
+                  <span class="suggestion-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+                </button>
+                <button class="suggestion" type="button" data-prompt="I'd love a little creative inspiration">
+                  <span class="suggestion-icon peach" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M9 14.5a6 6 0 1 1 6 0c-.8.6-1 1.4-1 2.5h-4c0-1.1-.2-1.9-1-2.5Z"/></svg>
+                  </span>
+                  <span><strong>Get inspired</strong><small>Explore a new idea together</small></span>
+                  <span class="suggestion-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+                </button>
+                <button class="suggestion" type="button" data-prompt="Can you help me think through something?">
+                  <span class="suggestion-icon mint" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H6l-3 2v-6a7.5 7.5 0 1 1 17-3.5Z"/><path d="M8 11h.01M12 11h.01M16 11h.01"/></svg>
+                  </span>
+                  <span><strong>Talk it through</strong><small>Make space for what's on your mind</small></span>
+                  <span class="suggestion-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+                </button>
+              </div>
+            </div>
+            <div class="message-list" id="message-list"></div>
+          </section>
+
+          <form class="composer" id="chat-form">
+            <label class="sr-only" for="message-input">Your message</label>
+            <textarea id="message-input" rows="1" maxlength="4000" placeholder="Share what's on your mind..." required></textarea>
+            <div class="composer-bottom">
+              <span class="composer-hint">Mira remembers this conversation <span aria-hidden="true">·</span> Enter to send</span>
+              <button class="send-button" id="send-button" type="submit" aria-label="Send message">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 14-7-5 14-2-6-7-1Z"/><path d="m12 13 7-8"/></svg>
               </button>
             </div>
-          </div>
-          <div class="message-list" id="message-list"></div>
-        </section>
-
-        <form class="composer" id="chat-form">
-          <label class="sr-only" for="message-input">Your message</label>
-          <textarea id="message-input" rows="1" maxlength="4000" placeholder="Share what's on your mind..." required></textarea>
-          <div class="composer-bottom">
-            <span class="composer-hint">Mira remembers this conversation <span aria-hidden="true">·</span> Enter to send</span>
-            <button class="send-button" id="send-button" type="submit" aria-label="Send message">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 14-7-5 14-2-6-7-1Z"/><path d="m12 13 7-8"/></svg>
-            </button>
-          </div>
-        </form>
-        <p class="disclaimer">A thoughtful companion, not a substitute for professional advice.</p>
-      </main>
+          </form>
+          <p class="disclaimer">A thoughtful companion, not a substitute for professional advice.</p>
+        </main>
+      </div>
     </div>
     <script src="./app.js" defer></script>
   </body>

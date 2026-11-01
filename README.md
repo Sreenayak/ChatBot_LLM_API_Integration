@@ -44,6 +44,11 @@ above.
 - Conversation history is kept in memory per conversation. The last 12 user
   and assistant messages are sent with each request, alongside Mira's system
   prompt. A new chat starts a fresh conversation.
+- The sidebar saves up to 50 successful conversations in the browser's local
+  storage, so they remain available in that browser after a page reload.
+  Clearing browser data or using another browser/device removes or hides these
+  saved conversations. The model context itself remains in server memory and
+  resets when the server restarts.
 - History is limited to 100 active conversations and is cleared when the
   server restarts. This is intentionally lightweight; use persistent storage
   for a multi-user production deployment.
