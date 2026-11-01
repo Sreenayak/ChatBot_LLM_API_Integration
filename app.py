@@ -1,3 +1,4 @@
+
 from contextlib import contextmanager
 import os
 import re
@@ -7,19 +8,40 @@ from collections import OrderedDict
 
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request, send_from_directory
-from openai import APIConnectionError, APIStatusError, APITimeoutError, AuthenticationError, OpenAI, RateLimitError
+from openai import (
+    APIConnectionError,
+    APIStatusError,
+    APITimeoutError,
+    AuthenticationError,
+    OpenAI,
+    RateLimitError,
+)
 
+# Load environment variables from app.env
+load_dotenv(dotenv_path="app.env")
 
-load_dotenv()
+# Read the OpenAI API key
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+
+# Read the model name, with a default value
+OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+
+# Check whether the API key is loaded
+if OPENAI_API_KEY:
+    print("OpenAI API key loaded successfully!")
+else:
+    print("ERROR: OpenAI API key is missing!")
 
 SYSTEM_PROMPT = (
     "You are Mira, a thoughtful and friendly everyday AI companion. "
     "Keep answers clear, warm, and useful. Ask a brief follow-up question "
     "when it would help the conversation."
 )
+
 MAX_HISTORY_MESSAGES = 12
 MAX_CONVERSATIONS = 100
 MAX_MESSAGE_LENGTH = 4000
+
 
 app = Flask(__name__, static_folder="static", static_url_path="")
 app.config["MAX_CONTENT_LENGTH"] = 20 * 1024
