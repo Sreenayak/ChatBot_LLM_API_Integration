@@ -9,6 +9,31 @@ const newChatButton = document.querySelector("#new-chat");
 let conversationId = crypto.randomUUID();
 let waiting = false;
 
+function resolveApiUrl() {
+  const isLocalApp = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
+  const isDefaultAppPort = ["", "5000"].includes(window.location.port);
+  return isLocalApp && isDefaultAppPort ? "/api/chat" : "http://127.0.0.1:5000/api/chat";
+}
+
+async function readJsonResponse(response) {
+  const contentType = response.headers.get("content-type") || "";
+
+  if (contentType.includes("application/json")) {
+    return response.json();
+  }
+
+  const text = await response.text();
+  if (!text) {
+    return { error: "The server returned an empty response. Please try again." };
+  }
+
+  try {
+    return JSON.parse(text);
+  } catch (error) {
+    return { error: text.slice(0, 300) || "The server returned an invalid response. Please try again." };
+  }
+}
+
 function scrollToLatest() {
   conversation.scrollTop = conversation.scrollHeight;
 }
@@ -64,12 +89,12 @@ async function sendMessage(text) {
   const typing = showTyping();
 
   try {
-    const response = await fetch("/api/chat", {
+    const response = await fetch(resolveApiUrl(), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message, conversation_id: conversationId }),
     });
-    const result = await response.json();
+    const result = await readJsonResponse(response);
     typing.remove();
     if (!response.ok) throw new Error(result.error || "Something went wrong. Please try again.");
     conversationId = result.conversation_id;
